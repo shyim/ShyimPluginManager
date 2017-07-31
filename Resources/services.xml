@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <parameters>
+        <parameter key="composer.cache_dir">%kernel.cache_dir%/composer</parameter>
+        <parameter key="shyim_pluginmanager.view_dir">%shyim_pluginmanager.plugin_dir%/Resources/views</parameter>
+    </parameters>
+
+    <services>
+        <service id="shopware_composer.composer" class="Composer\Composer">
+            <factory service="shopware_composer.composer_factory" method="factory"/>
+            <argument>%composer.cache_dir%</argument>
+            <argument>%kernel.root_dir%</argument>
+            <argument type="service" id="shopware_composer.io"/>
+        </service>
+
+        <service id="shopware_composer.composer_factory" class="ShyimPluginManager\Bundle\ComposerBundle\ComposerFactory"/>
+
+        <service id="shopware_composer.io" class="Composer\IO\BufferIO"/>
+
+        <service id="shopware_composer.service.plugin_list" class="ShyimPluginManager\Bundle\ComposerBundle\Service\PluginListService">
+            <argument type="service" id="http_client"/>
+            <argument type="service" id="cache"/>
+            <argument type="service" id="dbal_connection"/>
+        </service>
+
+        <service id="shyim_pluginmanager.subscriber.extjs" class="ShyimPluginManager\Subscriber\ExtjsSubscriber">
+            <argument type="string">%shyim_pluginmanager.view_dir%</argument>
+            <tag name="shopware.event_subscriber"/>
+        </service>
+    </services>
+</container>

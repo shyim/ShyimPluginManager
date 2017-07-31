@@ -1,0 +1,18 @@
+{
+  "name": "shyim/plugin-manager",
+  "keywords": ["shopware", "composer", "pluginmanager"],
+  "description": "Composer pluginmanager integration",
+  "license": "MIT",
+  "type": "shopware-plugin",
+  "extra": {
+    "installer-name": "ShyimPluginManager"
+  },
+  "require": {
+    "symfony/console": "2.8.17",
+    "symfony/filesystem": "2.8.17",
+    "symfony/finder": "2.8.17",
+    "symfony/process": "2.8.17",
+    "composer/composer": "^1.4",
+    "composer/installers": "~1.0"
+  }
+}
