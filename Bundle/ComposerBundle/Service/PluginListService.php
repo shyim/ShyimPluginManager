@@ -80,17 +80,17 @@ class PluginListService
      */
     private function fetchPluginsByComposerType($composerType, &$plugins)
     {
-        $request = $this->httpClient->get('https://packagist.org/search.json?type=' . $composerType);
+        $request = $this->httpClient->get('https://packagist.org/packages/list.json?type=' . $composerType);
         $body = json_decode($request->getBody(), true);
         // get addional package info
-        foreach ($body['results'] as &$composerPackage) {
-            if ($this->isBlacklistedPackage($composerPackage['name'])) {
+        foreach ($body['packageNames'] as &$composerPackage) {
+            if ($this->isBlacklistedPackage($composerPackage)) {
                 continue;
             }
-            $composerPackageRequest = $this->httpClient->get('https://packagist.org/p/' . $composerPackage['name'] . '.json');
+            $composerPackageRequest = $this->httpClient->get('https://packagist.org/packages/' . $composerPackage . '.json');
             $composerPackageBody = json_decode($composerPackageRequest->getBody(), true);
-            $composerPackageBody = array_reverse($composerPackageBody['packages'][$composerPackage['name']]);
-            $latestVersion = $this->getLatestVersion($composerPackageBody);
+            $composerPackageBody = array_reverse($composerPackageBody['package']);
+            $latestVersion = $this->getLatestVersion($composerPackageBody['versions']);
             // Missing installer-name in composer.json
             if (empty($latestVersion['extra']['installer-name'])) {
                 continue;
@@ -102,20 +102,20 @@ class PluginListService
                     $plugin->setCurrentVersion($installedPlugin['version']);
                 }
             }
-            $plugin->setName($composerPackage['name']);
+            $plugin->setName($composerPackage);
             $plugin->setType($latestVersion['type']);
             $plugin->setTime($latestVersion['time']);
             $plugin->setVersion($latestVersion['version']);
             $plugin->setDescription($latestVersion['description']);
-            $plugin->setDownloads($composerPackage['downloads']);
-            $plugin->setFavers($composerPackage['favers']);
+            $plugin->setDownloads($composerPackageBody['downloads']['total']);
+            $plugin->setFavers($composerPackageBody['favers']);
             $plugin->setAuthors($latestVersion['authors']);
             $plugin->setHomepage($latestVersion['homepage']);
             $plugin->setInstallName($latestVersion['extra']['installer-name']);
             $plugin->setLicense($latestVersion['license']);
             $plugin->setKeywords($latestVersion['keywords']);
-            $plugin->setUrl($composerPackage['url']);
-            $plugin->setRepository($composerPackage['repository']);
+            $plugin->setUrl('https://packagist.org/p/' . $composerPackage);
+            $plugin->setRepository($composerPackageBody['repository']);
             $plugins[] = $plugin;
         }
     }
