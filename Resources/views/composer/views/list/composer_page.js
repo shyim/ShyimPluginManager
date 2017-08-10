@@ -215,7 +215,7 @@ Ext.define('Shopware.apps.PluginManager.view.list.ComposerPage', {
                 me.updatePluginEvent(record);
             },
             getClass: function(value, metaData, record) {
-                if (record.get('version') === record.get('currentVersion') || record.get('state') === 0) {
+                if (record.get('version') === record.raw['currentVersion'] || record.get('state') === 0) {
                     return Ext.baseCSSPrefix + 'hidden';
                 }
                 this.items[3].tooltip = '{s name="install_update"}Install update{/s} (v ' + record.get('version') + ')';

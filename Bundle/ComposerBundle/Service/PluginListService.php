@@ -87,10 +87,10 @@ class PluginListService
             if ($this->isBlacklistedPackage($composerPackage)) {
                 continue;
             }
-            $composerPackageRequest = $this->httpClient->get('https://packagist.org/p/' . $composerPackage . '.json');
+            $composerPackageRequest = $this->httpClient->get('https://packagist.org/packages/' . $composerPackage . '.json');
             $composerPackageBody = json_decode($composerPackageRequest->getBody(), true);
-            $composerPackageBody = array_reverse($composerPackageBody['packages'][$composerPackage]);
-            $latestVersion = $this->getLatestVersion($composerPackageBody);
+            $composerPackageBody = array_reverse($composerPackageBody['package']);
+            $latestVersion = $this->getLatestVersion($composerPackageBody['versions']);
             // Missing installer-name in composer.json
             if (empty($latestVersion['extra']['installer-name'])) {
                 continue;
@@ -107,15 +107,15 @@ class PluginListService
             $plugin->setTime($latestVersion['time']);
             $plugin->setVersion($latestVersion['version']);
             $plugin->setDescription($latestVersion['description']);
-            $plugin->setDownloads(0); //TODO: get with new method, before: $composerPackage['downloads']
-            $plugin->setFavers(0); //TODO: get with new method, before: $composerPackage['favers']
+            $plugin->setDownloads($composerPackageBody['downloads']['total']);
+            $plugin->setFavers($composerPackageBody['favers']);
             $plugin->setAuthors($latestVersion['authors']);
             $plugin->setHomepage($latestVersion['homepage']);
             $plugin->setInstallName($latestVersion['extra']['installer-name']);
             $plugin->setLicense($latestVersion['license']);
             $plugin->setKeywords($latestVersion['keywords']);
-            $plugin->setUrl(''); //TODO: get with new method, before: $composerPackage['url']
-            $plugin->setRepository(''); //TODO: get with new method, before: $composerPackage['repository']
+            $plugin->setUrl('https://packagist.org/p/' . $composerPackage);
+            $plugin->setRepository($composerPackageBody['repository']);
             $plugins[] = $plugin;
         }
     }
