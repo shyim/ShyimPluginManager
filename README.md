@@ -13,7 +13,7 @@ This integration is experimental. If you found bugs feel free to report :)
 
 # How to add Plugins?
 
-* Add a composer.json file to our Repository. [Example File](https://github.com/shyim/shopware-profiler/blob/master/composer.json)
+* Add a composer.json file to your Repository. [Example File](https://github.com/shyim/shopware-profiler/blob/master/composer.json)
 * Publish our plugin to packagist.org
 
 ## Composer-Types
