@@ -2,7 +2,7 @@
 
 Required Minimum Shopware Version 5.3
 
-This integration is experimental. If you found bugs feel free to report :)
+This integration is **experimental**. If you found bugs feel free to report or fork and create a pull request :)
 
 # Installation
 
@@ -14,7 +14,7 @@ This integration is experimental. If you found bugs feel free to report :)
 # How to add Plugins?
 
 * Add a composer.json file to our Repository. [Example File](https://github.com/shyim/shopware-profiler/blob/master/composer.json)
-* Publish our plugin to packagist.org
+* Publish your plugin to packagist.org
 
 ## Composer-Types
 
