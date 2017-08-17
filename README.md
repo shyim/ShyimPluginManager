@@ -2,6 +2,8 @@
 
 Required Minimum Shopware Version 5.3
 
+This integration is experimental. If you found bugs feel free to report :)
+
 # Installation
 
 ## Git Version
