@@ -30,5 +30,11 @@
             <argument type="string">%shyim_pluginmanager.view_dir%</argument>
             <tag name="shopware.event_subscriber"/>
         </service>
+
+        <service id="shyim_pluginmanager.subscriber.plugin_manager" class="ShyimPluginManager\Subscriber\PluginManagerSubscriber">
+            <argument type="string">%kernel.root_dir%</argument>
+            <argument type="string">%composer.cache_dir%</argument>
+            <tag name="shopware.event_subscriber"/>
+        </service>
     </services>
 </container>
