@@ -16,6 +16,7 @@ Ext.define('Shopware.apps.PluginManager.model.Composer', {
         { name: 'downloads', type: 'string' },
         { name: 'favers', type: 'string' },
         { name: 'version', type: 'string' },
+        { name: 'currentVersion', type: 'string' },
         { name: 'authors', type: 'auto' },
         { name: 'homepage', type: 'string' },
         { name: 'installName', type: 'string' },
