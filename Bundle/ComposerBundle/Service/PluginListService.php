@@ -87,10 +87,24 @@ class PluginListService
             if ($this->isBlacklistedPackage($composerPackage)) {
                 continue;
             }
+			
+			$versionOfRepo = null;
+			
             $composerPackageRequest = $this->httpClient->get('https://packagist.org/packages/' . $composerPackage . '.json');
             $composerPackageBody = json_decode($composerPackageRequest->getBody(), true);
             $composerPackageBody = array_reverse($composerPackageBody['package']);
             $latestVersion = $this->getLatestVersion($composerPackageBody['versions']);
+			
+			if(strpos($composerPackageBody['repository'],'github.com') !== false) {
+				try {
+					//looking for the plugin.xml in repo. Yes, currently ignoring the old plugin-system
+					$repositoryPlugin = $this->httpClient->get(str_replace('github.com/','raw.githubusercontent.com/',$composerPackageBody['repository']) . '/' . str_replace('dev-','',$latestVersion['version']) . '/plugin.xml')->getBody();
+					$versionOfRepo = json_decode(json_encode(simplexml_load_string($repositoryPlugin)),true)["version"];
+				} catch(\Exception $ex) {
+					//TODO: making some work??? Or just ignore them? ;-)
+				}
+			}
+			
             // Missing installer-name in composer.json
             if (empty($latestVersion['extra']['installer-name'])) {
                 continue;
@@ -105,7 +119,7 @@ class PluginListService
             $plugin->setName($composerPackage);
             $plugin->setType($latestVersion['type']);
             $plugin->setTime($latestVersion['time']);
-            $plugin->setVersion($latestVersion['version']);
+            $plugin->setVersion($versionOfRepo?$versionOfRepo:$latestVersion['version']);
             $plugin->setDescription($latestVersion['description']);
             $plugin->setDownloads($composerPackageBody['downloads']['total']);
             $plugin->setFavers($composerPackageBody['favers']);
