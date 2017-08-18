@@ -16,6 +16,7 @@ This integration is **experimental**. If you found bugs feel free to report or f
 * Add a composer.json file to our Repository. [Example File](https://github.com/shyim/shopware-profiler/blob/master/composer.json)
 * Publish your plugin to packagist.org
 
+
 ## Composer-Types
 
 | Type                     | Default Plugin Location                 |
