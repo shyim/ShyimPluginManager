@@ -7,6 +7,7 @@ use Shopware\Components\Plugin\Context\InstallContext;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 require(__DIR__ . '/vendor/autoload.php');
+require(__DIR__ . '/../../composer/vendor/autoload.php');
 
 /**
  * Class ShyimPluginManager
